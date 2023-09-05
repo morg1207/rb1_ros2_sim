@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(rb1_description)
+project(rb1_gazebo)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -26,9 +26,6 @@ endif()
 install(
   DIRECTORY 
   launch
-  robot
-  urdf
-  meshes
   DESTINATION share/${PROJECT_NAME}
 )
 
