@@ -7,7 +7,7 @@
         <material>Gazebo/Black</material>
     </gazebo>
 
-    <gazebo reference="base_link" >
+    <gazebo reference="arrow_link" >
         <material>Gazebo/White</material>
     </gazebo>
 
