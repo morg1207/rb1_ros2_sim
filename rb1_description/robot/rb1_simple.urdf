@@ -11,6 +11,10 @@
         <material>Gazebo/White</material>
     </gazebo>
 
+    <gazebo reference="elevator_link" >
+        <material>Gazebo/Black</material>
+    </gazebo>
+
     <material name="arrow_material">
         <texture filename="package://../img/arrow.png"/>
         
@@ -116,7 +120,35 @@
 			<robot_base_frame>base_footprint</robot_base_frame>
 		</plugin>
 	</gazebo>
+    
 
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+        <joint name="elevator_joint">
+            <command_interface name="position">
+              <param name="min">-100</param>
+              <param name="max">100</param>
+            </command_interface>
+            <state_interface name="position">
+              <param name="initial_value">1.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+    </ros2_control>
+
+    <gazebo>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+            <namespace>rb1</namespace>
+            <robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type>
+            <robot_param>robot_description</robot_param>
+            <robot_param_node>robot_state_publisher</robot_param_node>
+            <parameters>$(find rb1_gazebo)/config/elevator_ros2_control.yaml</parameters>
+            <!-- <robotSimType>gazebo_ros2_control/DefaultRobotHWSim</robotSimType> -->
+        </plugin>
+    </gazebo>
 
 
 
@@ -145,29 +177,67 @@
         </visual>
     </link>
 
+    <link name="elevator_link">
+        <inertial>
+            <mass value="100"/>
+            <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+        </inertial>
+        <collision>
+            <geometry>
+                <cylinder length="0.005" radius="0.25"/>
+            </geometry>
+        </collision>
+        <visual>
+            <geometry>
+                <cylinder length="0.005" radius="0.25"/>
+            </geometry>
+            <material name = "Black">
+                <color rgba = "0 0 0 0" />
+            </material>
+        </visual>
+    </link>
+
+    <joint name="elevator_joint" type="prismatic">
+        <parent link="base_link"/>
+        <child link="elevator_link"/>
+        <origin xyz="0 0 0.16" rpy="0 0 0"/>
+        <limit lower="0" upper="2" effort="10000" velocity="0.1"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+    
+
     <link name = "arrow_link">
         <visual>
             <origin xyz="0 0 0"/>                
             <geometry>
-                <box size="0.4 0.1 0.01"/>
+                <box size="0.4 0.1 0.001"/>
             </geometry>
-            <material name="White"/>
+            <material name="White">
+                <color rgba="1 1 1 1"/>
+            </material>
+
         </visual>
     </link>
 
-    <joint name="base_to_arrow" type="fixed">
-        <parent link="base_link"/>
+    <joint name="elevator_to_arrow" type="fixed">
+        <parent link="elevator_link"/>
         <child link="arrow_link"/>
-        <origin xyz="0.0 0.0 0.15"/>
+        <origin xyz="0.0 0.0 0.0025"/>
     </joint>
  
     <link name = "arrow_link_2">
         <visual>
-            <origin xyz="0 0 0"/>                
+            <origin xyz="0 0 0"/>       <gazebo reference="arrow_link" >
+                <material>Gazebo/White</material>
+            </gazebo>
+                     
             <geometry>
-                <box size="0.15 0.1 0.01"/>
+                <box size="0.15 0.1 0.001"/>
             </geometry>
-            <material name="White"/>
+            <material name="White">
+                <color rgba="1 1 1 1"/>
+            </material>
+
         </visual>
     </link>
 
@@ -181,9 +251,12 @@
         <visual>
             <origin xyz="0 0 0"/>                
             <geometry>
-                <box size="0.15 0.1 0.01"/>
+                <box size="0.15 0.1 0.001"/>
             </geometry>
-            <material name="White"/>
+            <material name="White">
+                <color rgba="1 1 1 1"/>
+            </material>
+
         </visual>
     </link>
 
