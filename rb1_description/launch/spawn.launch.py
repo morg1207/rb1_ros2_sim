@@ -16,7 +16,7 @@ def launch_setup(context, *args, **kwargs):
     x_spawn = LaunchConfiguration('x_spawn').perform(context)
     y_spawn = LaunchConfiguration('y_spawn').perform(context)
     yaw_spawn = LaunchConfiguration('yaw_spawn').perform(context)
-    entity_name = LaunchConfiguration('entity_name').perform(context)
+    # entity_name = LaunchConfiguration('entity_name').perform(context)
 
     # ROBOT STATE PUBLISHER
     ####### DATA INPUT ##########
@@ -31,9 +31,12 @@ def launch_setup(context, *args, **kwargs):
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
-        namespace=entity_name,
-        parameters=[{'frame_prefix': entity_name+'/', 'use_sim_time': True,
-                     'robot_description': Command(['xacro ', robot_desc_path, ' robot_name:=', entity_name])}],
+        # namespace=entity_name,
+        # parameters=[{'frame_prefix': entity_name+'/', 'use_sim_time': True,
+        #              'robot_description': Command(['xacro ', robot_desc_path, ' robot_name:=', entity_name])}],
+        parameters=[{'use_sim_time': True,
+                     'robot_description': Command(['xacro ', robot_desc_path])}],
+                     
         output="screen"
     )
 
@@ -41,9 +44,11 @@ def launch_setup(context, *args, **kwargs):
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_publisher',
-        namespace=entity_name,
-        parameters=[{'frame_prefix': entity_name+'/', 'use_sim_time': True,
-                     'robot_description': Command(['xacro ', robot_desc_path, ' robot_name:=', entity_name])}],
+        # namespace=entity_name,
+        # parameters=[{'frame_prefix': entity_name+'/', 'use_sim_time': True,
+        #              'robot_description': Command(['xacro ', robot_desc_path, ' robot_name:=', entity_name])}],
+        parameters=[{'use_sim_time': True,
+                     'robot_description': Command(['xacro ', robot_desc_path])}],
         output="screen"
     )
 
@@ -52,14 +57,21 @@ def launch_setup(context, *args, **kwargs):
         package='gazebo_ros',
         executable='spawn_entity.py',
         name='spawn_entity',
-        namespace=entity_name,
+        # namespace=entity_name,
         output='screen',
+        # arguments=['-entity',
+        #            entity_name,
+        #            '-x', x_spawn, '-y', y_spawn, '-Y', yaw_spawn,
+        #            '-topic', 'robot_description',
+        #            '-timeout', '120.0'
+        #            ]
         arguments=['-entity',
-                   entity_name,
+                   'rb1',
                    '-x', x_spawn, '-y', y_spawn, '-Y', yaw_spawn,
                    '-topic', 'robot_description',
                    '-timeout', '120.0'
                    ]
+
     )
 
     return [robot_state_publisher_node, joint_state_publisher_node, start_gazebo_ros_spawner_cmd]

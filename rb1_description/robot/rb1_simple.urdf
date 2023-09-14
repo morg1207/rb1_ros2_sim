@@ -141,7 +141,7 @@
 
     <gazebo>
         <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-            <namespace>rb1</namespace>
+            <!-- <namespace>rb1</namespace> -->
             <robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type>
             <robot_param>robot_description</robot_param>
             <robot_param_node>robot_state_publisher</robot_param_node>
