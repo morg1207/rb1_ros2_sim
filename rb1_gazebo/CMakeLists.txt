@@ -27,7 +27,13 @@ install(
   DIRECTORY 
   launch
   config
+  scripts
   DESTINATION share/${PROJECT_NAME}
+)
+# Install Python executables
+install(PROGRAMS
+  scripts/elevator_relay.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
