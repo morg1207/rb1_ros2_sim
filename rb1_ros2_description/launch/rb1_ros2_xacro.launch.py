@@ -58,7 +58,7 @@ def generate_launch_description():
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
-        namespace=robot_name_1,
+        #namespace=robot_name_1,
         parameters=[{'use_sim_time': use_sim_time,
                      'robot_description': ParameterValue(Command(['xacro ', robot_desc_path, ' robot_name:=', robot_name_1]), value_type=str)}],
         output="screen"
@@ -67,8 +67,11 @@ def generate_launch_description():
     spawn_robot1 = Node(
         package='gazebo_ros',
         executable='spawn_entity.py',
+        #arguments=['-entity', robot_name_1, '-x', '-0.3', '-y', '-1.5', '-z', '0.0',
+         #          '-topic', robot_name_1+'/robot_description']
+
         arguments=['-entity', robot_name_1, '-x', '-0.3', '-y', '-1.5', '-z', '0.0',
-                   '-topic', robot_name_1+'/robot_description']
+                   '-topic','/robot_description']
     )
 
     load_joint_state_controller = ExecuteProcess(

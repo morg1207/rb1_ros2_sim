@@ -189,7 +189,7 @@
     </ros2_control>
 
     <!-- ROS2 control - position -->
-    <ros2_control name="joint_pos" type="system">
+    <ros2_control name="joint_position" type="system">
         <hardware>
             <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </hardware>
